@@ -3,6 +3,7 @@ package functions
 import (
 	"encoding/json"
 	"fmt"
+	"go-api/entity"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -13,28 +14,6 @@ import (
 var db *gorm.DB
 var err error
 
-/*MODEL*/
-type User struct {
-	ID    uint   `gorm:"primary_key"`
-	Name  string `gorm:"size:128"`
-	Email string
-}
-
-type Produto struct {
-	ID        uint   `gorm:"primary_key"`
-	Name      string `gorm:"size:128"`
-	Descricao string `gorm:"size:256"`
-}
-
-/*FUNCTIONS*/
-func ConnDb() {
-	db, err = gorm.Open("mysql", "root:root@/goorm?charset=utf8&parseTime=True&loc=Local")
-	if err != nil {
-		panic("nao foi")
-	}
-	defer db.Close()
-}
-
 func InitialMigration() {
 	db, err = gorm.Open("mysql", "root:root@/goorm?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
@@ -43,8 +22,8 @@ func InitialMigration() {
 	}
 	defer db.Close()
 
-	db.AutoMigrate(&User{})
-	db.AutoMigrate(&Produto{})
+	db.AutoMigrate(&entity.User{})
+	db.AutoMigrate(&entity.Produto{})
 }
 
 func AllUserRes(w http.ResponseWriter, r *http.Request) {
@@ -55,7 +34,7 @@ func AllUserRes(w http.ResponseWriter, r *http.Request) {
 
 	defer db.Close()
 
-	var users []User
+	var users []entity.User
 	db.Find(&users)
 	json.NewEncoder(w).Encode(users)
 }
@@ -71,7 +50,7 @@ func NewUser(w http.ResponseWriter, r *http.Request) {
 	name := vars["name"]
 	email := vars["email"]
 
-	db.Create(&User{Name: name, Email: email})
+	db.Create(&entity.User{Name: name, Email: email})
 	fmt.Fprintf(w, "foi")
 }
 
@@ -85,7 +64,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	name := vars["name"]
 
-	var user User
+	var user entity.User
 	db.Where("name = ?", name).Find(&user)
 	db.Delete(&user)
 
@@ -93,14 +72,18 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	ConnDb()
+	db, err = gorm.Open("mysql", "root:root@/goorm?charset=utf8&parseTime=True&loc=Local")
+	if err != nil {
+		panic("nao foi")
+	}
+	defer db.Close()
 
 	vars := mux.Vars(r)
 	id := vars["id"]
 	name := vars["name"]
 	email := vars["email"]
 
-	var user User
+	var user entity.User
 	db.Where("id = ?", id).Find(&user)
 
 	user.Name = name

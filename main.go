@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"go-api/entity"
 	"go-api/functions"
 	"log"
 	"net/http"
@@ -26,7 +27,9 @@ func handleRequest() {
 func main() {
 	fmt.Println("GO ORM")
 
-	functions.InitialMigration()
+	entity.InitialMigrationProduto()
+	entity.InitialMigrationUser()
+	entity.InitialMigrationCliente()
 
 	handleRequest()
 }
