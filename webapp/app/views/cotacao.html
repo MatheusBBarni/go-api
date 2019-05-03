@@ -1,0 +1,182 @@
+
+
+<main class="corpo" ng-init="atualizarNomeTela('Cotação')">
+	<div class="container">
+		<div id="container-principal" class="container-principal">
+			<div class="grupo-botoes">
+				<div class="botao-incluir" ng-click="incluir()" onclick="showDetalhes('container-principal', 'container-detalhes')"><i class="fas fa-plus"></i> &nbsp; Incluir</div>
+			</div>
+		
+		
+			<table id="tabela-principal" data-toggle="table"
+				data-striped="true" data-sortable="true"
+				data-classes="table table-striped table-hovertable-condensed" data-sort-name="dataInclusao" data-sort-order="desc" data-refresh="true">
+				<thead>
+					<tr>
+						
+						<th data-field="cliente.nomeFantasia" data-sortable="true">Cliente</th>		
+						<th data-field="dataInclusao" data-sortable="true" data-formatter="dateFormatter">Data da solicição</th>
+						<th data-field="dataDeViagem" data-sortable="true" data-formatter="dateFormatter">Data da viagem</th>
+						<th data-field="descricao" data-sortable="true">Descrição</th>
+						<th data-field="descricaoStatusCotacao" data-sortable="true">Situacao</th>
+						<th data-formatter="editarFormatter" class="th-span"></th>
+						<th data-formatter="excluirFormatter" class="th-span"></th>
+					</tr>
+				</thead>
+			</table>
+			
+			<div class="pagination-wrapper">
+  
+			  Quantidade por página: 
+			  <select class="pagination-select" id="sctPagination" ng-model="pagination.page.size" ng-change="pagination.refresh()" >
+			    <option selected>10</option>
+			    <option ng-show="pagination.page.totalElements > 25" value="25">25</option>
+			    <option ng-show="pagination.page.totalElements > 50" value="50">50</option>
+			    <option ng-show="pagination.page.totalElements > 100" value="100">100</option>
+			    <option value="{{pagination.page.totalElements}}">{{pagination.page.totalElements}}</option>
+			  </select>
+			  de {{pagination.page.totalElements}}
+			  
+			  
+			  <div class="pagination">
+			    <a class="prev page-numbers" href="javascript:;" ng-click="pagination.fetchFirst()">Primeira</a>
+			
+			    
+			    <a class="page-numbers " ng-click="pagination.prevData()" ng-show="pagination.page.number > 1">{{pagination.prevNumber() + 1}}</a>
+			    
+			    <a class="page-numbers current" href="javascript:;"  ng-click="pagination.refresh()">{{pagination.page.number + 1}}</a>
+			    
+			    <a class="page-numbers" href="javascript:;" ng-click="pagination.nextData()" ng-show="pagination.page.number < pagination.page.totalPages-1">{{pagination.nextNumber() + 1}}</a>
+			    
+			    
+			    <a class="next page-numbers" href="javascript:;" ng-click="pagination.fetchLast()">Última</a>
+			    
+			  </div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div id="container-detalhes" class="container-detalhes">
+		<div class="container">
+			<div class="grupo-botoes">
+				<div class="botao-padrao botao-incluir" ng-click="salvar()"><i class="far fa-save"></i> &nbsp; Salvar</div>
+				<div class="botao-fechar" onclick="showDetalhes('container-detalhes', 'container-principal')"><i class="fas fa-times"></i></div>			
+			</div>
+		</div>
+		<div class="container">
+			<div class="corpo-detalhes">
+				<ul class="nav nav-tabs" role="tablist" style="padding-left: 25px; padding-top: 15px">
+					<li role="presentation" id="panel-cotacao" class="nav-link"><a href="" ng-click="ativarTab('cotacao')" aria-controls="cotacao" role="tab" data-toggle="tab">Cotação</a></li>
+					<li role="presentation" id="panel-conversa" class="nav-link"><a href="" ng-click="ativarTab('conversa')"  aria-controls="conversa" role="tab" data-toggle="tab">Conversa</a></li>
+				
+				</ul>
+				
+				<div role="tabpanel" class="tab-pane" id="tab-cotacao">
+				
+					<div class="row row-form">		
+						<div class="col-sm-8 col-md-8">
+							<label class="label-form">Cliente</label> 
+							<select class="form-control" ng-model="registro.cliente" ng-options="item as item.nomeFantasia for item in clientes track by item.id">
+								<option value="">--- Selecione ---</option>
+							</select>							
+						</div>
+						<div class="col-sm-4 col-md-4">
+							<label class="label-form">Data da viagem</label> 
+							<input class="form-control" ng-model="registro.dataDeViagem" type="date" />
+						</div>	
+					</div>
+					
+					<div class="row row-form">
+						<div class="col-sm-12 col-md-12">
+							<label class="label-form">Descrição</label> 
+							<textarea class="form-control" rows="3" ng-model="registro.descricao"></textarea>
+						</div>	
+					</div>
+					
+					<div class="row row-form">
+						<div class="col-sm-12 col-md-12">
+							<label class="label-form">Atendente</label> 
+							<select class="form-control" ng-model="registro.atendente" ng-options="item as item.nome for item in atendentes track by item.id">
+								<option value="">--- Selecione ---</option>
+							</select>
+						</div>	
+					</div>
+					
+					<div class="row row-form" ng-show="registro.cliente != null">
+						<div class="col-sm-12 col-md-12">
+							<label class="label-form">Cliente pode mudar a data:</label> 
+							<label>{{podeSimNao}}</label>
+						</div>	
+					</div>
+ 				
+					<div class="row row-form" ng-show="false">
+						<div class="col-md-10 col-lg-10">
+							<label>Usuário</label> 
+							<select class="form-control"ng-model="registro.usuario">
+								<option value="">--- Selecione ---</option>
+								<option value="A">Atendente</option>
+								<option value="C">Cliente</option>
+							</select>
+						</div>
+					</div>
+					
+				</div>				
+				
+				<div role="tabpanel" class="tab-pane" id="tab-conversa">
+				
+					<div class="row row-form">
+						<div class="col-md-6 col-lg-6">
+		               		<label class="control-label label-form">Status da cotação</label>
+		               		 <select class="form-control" ng-model="registro.statusCotacao">
+								<option value="A">Aguardando resposta da agencia</option>
+								<option value="C">Aguardando resposta o cliente</option>
+								<option value="F">Finalizado</option>
+				           	</select>
+		                </div>
+					</div>
+				
+					<hr />
+				
+					<div class="row row-form">		
+						<div class="col-sm-12 col-md-12">
+							<label class="label-form">Mensagem</label>
+							<textarea class="form-control" rows="3" ng-model="conversa.descricao"></textarea> 
+						</div>	
+					</div>
+					
+					<div class="container">
+						<div class="grupo-botoes">
+							<div class="botao-padrao botao-incluir botao-acao-interna" ng-click="adicionarConversa()"><i class="fas fa-bullhorn"></i> &nbsp; Responder</div>
+						</div>
+					</div>
+		                
+	                <div class="row row-form">
+	                	<div class="col-lg-12">
+		                	<legend>Conversa</legend>
+		                	<table id="tabela-conversa" data-toggle="table"
+						       data-striped="true"
+						       data-sortable="true"
+						       data-classes="table table-hover table-condensed"
+						       data-refresh="true">
+							    <thead> 
+							    <tr>
+							        <th data-field="dataResposta" data-sortable="true" data-formatter="dateTimeFormatter">Data e hora</th>
+							        <th data-field="descricao" data-sortable="true">Mensagem</th>
+							        <th data-formatter="excluirMensagemFormatter" class="th-acao"></th>
+							    </tr>
+							    </thead>
+							</table>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+<footer>
+	@copyright - &nbsp; <img src="http://demacode.com.br/wp-content/uploads/2018/10/loginnovo.png" />
+</footer>
+

@@ -1,0 +1,99 @@
+<main class="corpo" ng-init="atualizarNomeTela('Dicas')">
+	<div class="container">
+		<div id="container-principal" class="container-principal">
+			<div class="grupo-botoes">
+				<div class="botao-incluir" ng-click="incluir()" onclick="showDetalhes('container-principal', 'container-detalhes')"><i class="fas fa-plus"></i> &nbsp; Incluir</div>
+			</div>
+		
+			<table id="tabela-principal" data-toggle="table"
+				data-striped="true" data-sortable="true"
+				data-classes="table table-hover table-striped table-condensed"
+				data-refresh="true">
+				<thead>
+					<tr>		
+						<th data-field="descricao" data-sortable="true">Título</th>
+						<th data-field="destino" data-sortable="true">Destino</th>				
+						<th data-formatter="editarFormatter" class="th-span"></th>
+						<th data-formatter="excluirFormatter" class="th-span"></th>
+					</tr>
+				</thead>
+			</table>
+			
+			<div class="pagination-wrapper">
+			
+			  Quantidade por página: 
+			  <select class="pagination-select" id="sctPagination" ng-model="pagination.page.size" ng-change="pagination.refresh()" >
+			    <option selected>10</option>
+			    <option ng-show="pagination.page.totalElements > 25" value="25">25</option>
+			    <option ng-show="pagination.page.totalElements > 50" value="50">50</option>
+			    <option ng-show="pagination.page.totalElements > 100" value="100">100</option>
+			    <option value="{{pagination.page.totalElements}}">{{pagination.page.totalElements}}</option>
+			  </select>
+			  de {{pagination.page.totalElements}}
+			  
+			  
+			  <div class="pagination">
+			    <a class="prev page-numbers" href="javascript:;" ng-click="pagination.fetchFirst()">Primeira</a>
+			
+			    
+			    <a class="page-numbers " ng-click="pagination.prevData()" ng-show="pagination.page.number > 1">{{pagination.prevNumber() + 1}}</a>
+			    
+			    <a class="page-numbers current" href="javascript:;"  ng-click="pagination.refresh()">{{pagination.page.number + 1}}</a>
+			    
+			    <a class="page-numbers" href="javascript:;" ng-click="pagination.nextData()" ng-show="pagination.page.number < pagination.page.totalPages-1">{{pagination.nextNumber() + 1}}</a>
+			    
+			    
+			    <a class="next page-numbers" href="javascript:;" ng-click="pagination.fetchLast()">Última</a>
+			    
+			  </div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- CONTAINER-DETALHES -->
+	
+	<div id="container-detalhes" class="container-detalhes">
+		<div class="container">
+			<div class="grupo-botoes">
+				<div class="botao-padrao botao-incluir" ng-click="salvar()"><i class="far fa-save"></i> &nbsp; Salvar</div>
+				<div class="botao-fechar" data-dismiss ng-click="fechar()" ><i class="fas fa-times"></i></div>
+			</div>
+		</div>
+		<div class="container">
+		
+			<div class="corpo-detalhes">
+				
+				<div class="row row-form">
+					<div class="col-sm-12 col-md-12">
+						<label class="label-form">Título</label> 
+						<input class="form-control" ng-model="registro.descricao" type="text" />
+					</div>					
+				</div>
+				
+				<div class="row row-form">
+					<div class="col-sm-12 col-md-12">
+						<label class="label-form">Destino</label> 
+						<input class="form-control" ng-model="registro.destino" type="text" />
+					</div>	
+				</div>
+				
+				<div class="row row-form">
+					<div class="form-group col-sm-12 col-md-12">
+						<label>Arquivo</label>
+						<small style="font-size: 12px">(Tamanho maximo permitido de arquivo é de 4mb)</small>
+						<input type="file" class="form-control" id="arquivoFile" ng-model="file"
+							onchange="angular.element(this).scope().converterArquivo(this)">
+						<label>Arquivo: <a href="{{linkArquivo}}">{{nomeArquivo}}</a></label>
+					</div>
+				</div>
+					
+			</div>				
+				
+		</div>
+	</div>
+	
+	<footer>
+        @copyright - &nbsp; <img src="http://demacode.com.br/wp-content/uploads/2018/10/loginnovo.png" />
+    </footer>
+</main>

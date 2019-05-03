@@ -1,0 +1,119 @@
+
+
+<div class="content" ng-init="atualizarNomeTela('Tecelagens')">
+
+	<div class="row">
+		<div class="col-lg-4">
+			<button type="button" class="btn btn-novo" ng-click="incluir()">Incluir novo</button>
+		</div>
+	</div>
+	
+	<table id="tabela-principal" data-toggle="table"
+		data-striped="true"
+		data-classes="table table-hover table-condensed">
+		<thead>
+			<tr>
+				<th data-field="descricao" data-sortable="true">Razão Social</th>
+				<th data-field="endereco" data-sortable="true">Endereço</th>
+				<th data-field="cep" data-sortable="true">CEP</th>
+				<th data-field="bairro" data-sortable="true">Bairro</th>
+				<th data-field="cidade.descricao" data-sortable="true">Cidade</th>
+				<th data-field="estado.uf" data-sortable="true">UF</th>
+				<th data-formatter="editarFormatter" class="th-span"></th>
+				<th data-formatter="excluirFormatter" class="th-span"></th>
+			</tr>
+		</thead>
+	</table>
+
+</div>
+
+<!-- Modais -->
+
+
+
+<div id="modal_edicao" class="modal" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">				
+				<h4 class="modal-title">Tecelagem <small>{{registro.razaoSocial}}</small></h4>
+			</div>
+			<div class="modal-body" style="padding: 0">
+
+				<div class="row row-form">
+					<div class="col-sm-6 col-md-6">
+						<label class="label-form">Razão Social</label> 
+						<input class="form-control" ng-model="registro.descricao" type="text" />
+					</div>
+					<div class="col-sm-4 col-md-4">
+						<label class="label-form">CPF/CNPJ</label> 
+						<input class="form-control cpfcnpj" ng-model="registro.cpfCnpj" type="text" />
+					</div>	
+				</div>		
+						
+				<div class="row row-form">
+					<div class="col-sm-5 col-md-5">
+						<label class="label-form">Insc. Estadual</label> 
+						<input class="form-control" ng-model="registro.inscricaoEstadual" type="text" />
+					</div>	
+					<div class="col-sm-6 col-md-6">
+						<label class="label-form">E-mail</label> 
+						<input class="form-control" maxLength="256" ng-model="registro.email" type="text" />
+					</div>
+				</div>
+
+
+				<div class="row row-form">
+					<div class="col-sm-8 col-md-8">
+						<label class="label-form">Endereço</label> 
+						<input class="form-control" maxlength="256" ng-model="registro.endereco" type="text" id="txtEndereco" />
+					</div>
+					<div class="col-sm-4 col-md-4">
+						<label class="label-form">CEP</label> 
+						<input class="form-control cep" ng-model="registro.cep" type="text" maxlength="9" />
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-sm-8 col-md-8">
+						<label class="label-form">Bairro</label> 
+						<input class="form-control" maxlength="128" ng-model="registro.bairro" type="text" />
+					</div>
+					<div class="col-sm-4 col-md-4">
+						<label class="label-form">Número</label> 
+						<input class="form-control" maxlength="6" ng-model="registro.numero" ui-number-mask="0" />
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-sm-4 col-md-4">
+						<label class="label-form">Estado</label> 
+						<select class="form-control" ng-options="item as item.descricao for item in estados track by item.id" ng-model="registro.estado" ng-change="buscaCidades()">
+						</select>
+					</div>				
+					<div class="col-sm-4 col-md-4">
+						<label class="label-form">Cidade</label> 
+						<select class="form-control" ng-options="item as item.descricao for item in cidades track by item.id" ng-model="registro.cidade">
+						</select>
+					</div>
+					<div class="col-sm-4 col-md-4">
+						<label class="label-form">Telefone</label> 
+						<input class="form-control celular" ng-model="registro.telefone"/>
+					</div>					
+				</div>
+				<div class="row row-form">
+					<div class="col-sm-9 col-md-9">
+						<label class="label-form">Complemento</label> 
+						<input class="form-control" maxlength="256" ng-model="registro.complemento" type="text" />
+					</div>
+				</div>
+
+			</div>
+
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="salvar()">Salvar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

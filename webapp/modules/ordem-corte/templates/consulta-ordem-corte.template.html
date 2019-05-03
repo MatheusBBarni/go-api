@@ -1,0 +1,81 @@
+
+	<section class="content-header">
+	   <h1>
+	     <span ng-if="ctrl.statusOrdemCorte == 'A'">Ordens de corte em aberto</span>
+	     <span ng-if="ctrl.statusOrdemCorte == 'O'">Ordens de corte concluidas</span>
+	     <span ng-if="ctrl.statusOrdemCorte == 'C'">Ordens de corte canceladas</span>
+	     
+	     <small>Cadastro e edição</small>
+	   </h1>
+	   <ol class="breadcrumb">
+	     <li><a href="#"><i class="fa fa-address-card"></i> Home</a></li>
+	     <li><a href="#">Ordens de corte</a></li>
+	     <li class="active">Consulta</li>
+	   </ol>
+	 </section>
+	 
+	<div class="content">
+		
+		<!-- <button type="button" class="dema-btn-incluir btn btn-warning" ng-click="ctrl.formOrdemCorteApi.incluir('A')">Incluir novo</button>  -->
+	
+		<div class="row row-filter">
+			
+			<div class="col-md-2 col-lg-2" ng-show="false">
+       			<label class="label-form">Filial</label>
+       			<select class="form-control"  ng-options="item as item.nomeFantasia for item in ctrl.filiais track by item.id" ng-model="ctrl.filtro.filial">
+    				<option value="">---- SELECIONE ----</option>
+    			</select>
+            </div>
+			
+			<div class="col-md-2 col-lg-2" ng-show="false">
+				<label class="control-label">Posição</label>
+				<select class="form-control" ng-model="ctrl.filtro.posicaoOrdemCorte">
+					<option value="A"> Em aberto </option>
+					<option value="P"> Em pedido </option> 
+					<option value="F"> Finalizado </option>
+					<option value="C"> Cancelado </option>
+				</select>
+			</div>
+			
+			<div class="form-group col-md-3 col-lg-3">
+				<label class="control-label label-form">N° ordem corte</label>
+				<input class="form-control" type="number" ng-model="ctrl.filtro.numeroOrdemCorte" />
+			</div>
+			
+			<div class="form-group col-md-3 col-lg-3">
+				<label class="control-label label-form">Entrega (de)</label>
+				<input class="form-control" ng-model="ctrl.filtro.dataEntregaInicial" type="date" />
+			</div>
+			
+			<div class="form-group col-md-3 col-lg-3">
+				<label class="control-label label-form">Entrega (até)</label>
+				<input class="form-control" ng-model="ctrl.filtro.dataEntregaFinal" type="date"/>
+			</div>			
+			
+			<div class="form-group col-btn-filter col-md-2 col-lg-2">
+				<button type="button" class="btn-novo btn btn-filter" ng-click="ctrl.atualizarTabela()">Buscar</button>
+			</div>
+		</div>		
+	
+		<table id="tabela-ordens-corte"
+	       data-striped="true"
+	       data-sortable="true"
+	       data-classes="table table-hover table-condensed"
+	       data-refresh="true">
+		    <thead>
+		    <tr>
+		        <th data-field="id" data-sortable="true">Número</th>
+		        <th data-field="fornecedor.nomeFantasia" data-sortable="true">Fornecedor</th>
+		        <th data-field="dataEmissao" data-formatter="dateFormatter" data-sortable="true">Emissão</th>
+		        <th data-field="dataEntrega" data-formatter="dateFormatter" data-sortable="true">Entrega</th>
+				<th data-formatter="concluirOrdemCorteFormatter" ng-if="ctrl.statusOrdemCorte == 'A'" class="th-acao"></th>		        
+		        <th data-formatter="visualizarOrdemCorteFormatter" class="th-acao"></th>
+		        <th data-formatter="cancelarOrdemCorteFormatter" ng-if="ctrl.statusOrdemCorte == 'A'" class="th-acao"></th>
+		    </tr>
+		    </thead>
+		</table>
+		
+	</div>
+	
+	<dc-form-ordem-corte api="ctrl.formOrdemCorteApi" on-save-call-back="ctrl.atualizarTabela()"></dc-form-ordem-corte>
+	<dc-form-concluir-ordem-corte api="ctrl.formConcluirOrdemCorteApi" on-save-call-back="ctrl.atualizarTabela()"></dc-form-conluir-ordem-corte>

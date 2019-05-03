@@ -1,0 +1,89 @@
+
+
+<div class="content" ng-init="atualizarNomeTela('Voucher')">
+
+	<div class="row">
+		<div class="col-lg-4">
+			<button type="button" class="btn btn-novo" ng-click="incluir()">Incluir novo</button>
+		</div>
+	</div>
+	
+	<table id="tabela-principal" data-toggle="table"
+		data-striped="true" data-sortable="true"
+		data-classes="table table-striped table-hovertable-condensed" data-refresh="true">
+		<thead>
+			<tr>
+				
+				<th data-field="descricao" data-sortable="true">Descrição</th>
+				<th data-field="tipo" data-formatter="tipoVoucherFormatter" data-sortable="true">Tipo</th>
+				<th data-field="dataDeUpload" data-sortable="true" data-formatter="dateFormatter">Data upload</th>				
+				<th data-formatter="editarFormatter" class="th-span"></th>
+				<th data-formatter="excluirFormatter" class="th-span"></th>
+			</tr>
+		</thead>
+	</table>
+
+</div>
+
+<!-- Modais -->
+
+
+<div id="modal_edicao" class="modal" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">				
+				<h4 class="modal-title">Voucher <small>{{registro.descricaol}}</small></h4>
+			</div>
+			<div class="modal-body" style="padding: 0">
+
+				<div class="row row-form">
+					
+					<div class="col-sm-10 col-md-10">
+						<label class="label-form">Descrição</label> 
+						<input class="form-control" ng-model="registro.descricao" type="text" />
+					</div>	
+				</div>	
+				
+				
+				<div class="row row-form">
+					<div class="col-md-10 col-lg-10">
+						<label>Tipo</label> <select class="form-control"ng-model="registro.tipo">
+							<option value="">--- Selecione ---</option>
+							<option value="A">Aereo</option>
+							<option value="R">Recibo</option>
+							<option value="H">Hotel</option>
+							<option value="I">Ingresso</option>
+							<option value="S">Seguros</option>
+							<option value="L">Locação de carro</option>
+							<option value="O">Outros</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="row row-form">
+					
+					<div class="col-sm-4 col-md-4">
+						<label class="label-form">Data upload</label> 
+						<input class="form-control" ng-model="registro.dataDeUpload" type="date" />
+					</div>	
+				</div>
+				
+				<div class="row row-form">
+					<div class="form-group col-lg-12">
+						<label>Arquivo</label> 
+						<input type="file" ng-model="file"
+							onchange="angular.element(this).scope().converterArquivo(this)">
+					</div>
+				</div>	
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="salvar()">Salvar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

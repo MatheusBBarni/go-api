@@ -1,0 +1,54 @@
+	<div id="modal-form-ordem-corte" class="modal" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+              	<h4 class="modal-title">Confirmação de ordem de corte</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body" style="padding: 0">  
+
+                <div class="row row-form">
+                	<div class="col-md-12 col-lg-12">
+		               	<label class="label-form">Fornecedor: {{ctrl.registro.fornecedor.nomeFantasia}}</label> <br>
+	                </div>
+                </div>
+
+				<div class="row row-form">
+                	<div class="col-md-6 col-lg-4">
+		               	<label class="label-form">Data emissão: {{ctrl.registro.dataEmissao | date: 'dd/MM/yyyy'}}</label> <br>
+	                </div>
+					<div class="col-md-6 col-lg-4">
+		               	<label class="label-form">Data entrega: {{ctrl.registro.dataEntrega | date: 'dd/MM/yyyy'}}</label> <br>
+	                </div>
+					<div class="col-md-6 col-lg-4">
+		               	<label class="label-form">Valor serviço: {{ctrl.registro.valorServico | currency: 'R$ ': 2 }}</label> <br>
+	                </div>	                
+                </div>
+
+                <div class="row row-form">
+                	<div class="col-md-12 col-lg-12">
+		               	<label class="label-form">Produto de saída: {{ctrl.registro.produtoSkuSaida.descricao}}</label> <br>
+		               	<label class="label-form">Quantidade saída: {{ctrl.registro.quantidadeSaida}}</label>
+	                </div>
+                </div>
+                
+               <div class="row row-form">
+                	<div class="col-md-12 col-lg-12">
+		               	<label class="label-form">Produto de entrada: {{ctrl.registro.produtoSkuEntrada.descricao}}</label> <br>
+		               	<label class="label-form">Quantidade entrada: {{ctrl.registro.quantidadeEntrada}}</label> <br>
+	                </div>
+                </div>                
+				      
+                
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">{{ ctrl.registro.id > 0 ? 'Fechar' : Cancelar}}</button>
+                <button ng-if="! ctrl.registro.id > 0" type="button" class="btn btn-salvar" ng-click="confirmarSolicitacaoCorte()">Confirmar ordem de corte</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>

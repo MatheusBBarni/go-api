@@ -1,0 +1,515 @@
+
+<div class="content">
+	
+	<div class="row">
+		<div class="col-lg-4">
+			<button type="button" class="btn btn-novo" ng-click="incluirParcelada()">Incluir conta parcelada</button>
+		</div>
+		<div class="col-lg-4">
+			<button type="button" class="btn btn-novo" ng-click="incluirFixa()">Incluir conta fixa</button>
+		</div>
+	</div>
+	
+
+	<div class="row row-filter">
+
+		<div class="form-group col-md-2 col-lg-2" ng-show="false">
+			<label class="control-label label-form">Tipo</label> <select
+				class="form-control" ng-model="filtro.tipoOperacao">
+				<option value="E">Receber</option>
+				<option value="S">Pagar</option>
+			</select>
+		</div>
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label label-form">Situacao</label> <select
+				class="form-control" ng-model="filtro.situacaoParcela">
+				<option value="A">Abertas</option>
+				<option value="P">Pagas</option>
+				<option value="C">Canceladas</option>
+				<option value="">Todas</option>
+			</select>
+		</div>
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label label-form">N° Documento</label> <input
+				class="form-control" ng-model="filtro.numeroDocumento" />
+		</div>
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label label-form">Vencimento(de)</label> <input
+				class="form-control" ng-model="filtro.dataVencimentoInicial"
+				type="date" />
+		</div>
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label label-form">Vencimento(até)</label> <input
+				class="form-control" ng-model="filtro.dataVencimentoFinal"
+				type="date" />
+		</div>
+
+		<div class="form-group col-btn-filter col-md-2 col-lg-2">
+			<button type="button" class="btn-filter btn btn-success btn-filter"
+				ng-click="filtrarParcelas()">Buscar</button>
+		</div>
+	</div>
+
+
+	<table id="tabela-principal" data-toggle="table" data-striped="true"
+		data-sortable="true" data-classes="table table-hover table-condensed"
+		data-refresh="true">
+		<thead>
+			<tr>
+				<th data-field="descricao" data-sortable="true">Descrição</th>
+				<th data-field="formaPagamento.descricao" data-sortable="true">Forma de pagamento</th>
+				<th data-field="contaBancaria.descricao" data-sortable="true">Conta</th>
+				<th data-field="numeroParcela" data-sortable="true">Parcela</th>
+				<th data-field="valorLiquido" data-formatter="moneyFormatter" data-sortable="true">Valor</th>
+				<th data-field="dataPagamento" data-formatter="dateFormatter" data-sortable="true">Data pagamento</th>
+				<th data-field="dataVencimento" data-formatter="dateFormatter" data-sortable="true">Data vencimento</th>
+				<th data-field="situacaoParcela" data-formatter="situacaoParcelaFormatter" data-sortable="true">Situação</th>
+				<th data-formatter="detalharParcelaFormatter" class="th-span"></th>
+				<th data-formatter="pagarParcelaFormatter" class="th-span"></th>
+			</tr>
+		</thead>
+	</table>
+
+</div>
+
+
+
+
+<!-- Modais -->
+<div id="modal_edicao" class="modal">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" ng-if="registro.tipoCobranca == 'P'">Inclusão
+					de cobrança parcelada</h4>
+				<h4 class="modal-title" ng-if="registro.tipoCobranca == 'F'">Inclusão
+					de cobranças fixas</h4>
+			</div>
+			<div class="modal-body" style="padding: 0" ng-form="formCadastro">
+
+				<div class="row row-form">
+					<div class="col-md-2 col-lg-2">
+						<label class="control-label">Tipo</label> 
+						<select class="form-control" ng-model="registro.tipoOperacao" disabled="disabled">
+							<option value="E">Receber</option>
+							<option value="S">Pagar</option>
+						</select>
+					</div>
+
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Cliente</label> <select
+							class="form-control"
+							ng-options="item as item.nomeFantasia for item in clientes track by item.id"
+							ng-model="registro.cliente"
+							dc-not-empty-if="{{registro.tipoOperacao == 'E'}}">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Fornecedor</label> <select
+							class="form-control"
+							ng-options="item as item.nomeFantasia for item in fornecedores track by item.id"
+							ng-model="registro.fornecedor">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Preposto</label> <select
+							class="form-control"
+							ng-options="item as item.nomeFantasia for item in prepostos track by item.id"
+							ng-model="registro.vendedor">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>					
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label">N° do documento</label> <input
+							class="form-control" ng-model="registro.numeroDocumento"
+							type="text" dc-not-empty />
+					</div>
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label">Data de emissão</label> <input
+							class="form-control" ng-model="registro.dataEmissao" type="date"
+							dc-not-empty />
+					</div>
+					<div class="col-md-5 col-lg-5">
+						<label class="control-label">Categoria de cobrança</label> <select
+							class="form-control"
+							ng-options="item as item.descricao for item in categoriasDeCobranca track by item.id"
+							ng-model="registro.categoriasCobranca[0].categoriaCobranca">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-9 col-lg-9">
+						<label class="control-label">Descrição</label> <input
+							class="form-control" ng-model="registro.descricao" type="text"
+							dc-not-empty />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Forma de pagamento</label> <select
+							class="form-control"
+							ng-options="item as item.descricao for item in formasDePagamento track by item.id"
+							ng-model="registro.formaPagamento">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Conta bancária</label> <select
+							class="form-control"
+							ng-options="item as item.descricao for item in contasBancarias track by item.id"
+							ng-model="registro.contaBancaria">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label">Valor bruto</label>
+						<div class="input-group">
+							<span class="input-group-addon">R$</span> <input
+								class="form-control" ng-model="registro.valorBruto"
+								ui-number-mask="2" dc-not-empty-number
+								ng-change="calculaValorLiquido()">
+						</div>
+					</div>
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label">Valor desconto</label>
+						<div class="input-group">
+							<span class="input-group-addon">R$</span> <input
+								class="form-control" ng-model="registro.valorDesconto"
+								ui-number-mask="2" ng-change="calculaValorLiquido()">
+						</div>
+					</div>
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label">Valor Líquido</label>
+						<div class="input-group">
+							<span class="input-group-addon">R$</span> <input
+								class="form-control" ng-model="registro.valorLiquido"
+								disabled="disabled" ui-number-mask="2">
+						</div>
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label" ng-if="registro.tipoCobranca == 'P'">N°
+							de parcelas</label> <label class="control-label"
+							ng-if="registro.tipoCobranca == 'F'">N° lançamentos</label> <input
+							class="form-control" ng-model="registro.numeroParcelas"
+							dc-not-empty-number ui-number-mask="0">
+					</div>
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label">Primeiro vencimento</label> <input
+							class="form-control" ng-model="registro.primeiroVencimento"
+							dc-not-empty type="date">
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left"
+					data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="salvar()">Gerar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+
+</div>
+
+
+<div id="modal_detalhe" class="modal">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Detalhes de cobrança</h4>
+			</div>
+			<div class="modal-body" style="padding: 0" ng-form="formCadastro">
+
+				<div class="row row-form">
+					<div class="col-md-4 col-lg-4">
+						<label class="control-label"><strong>Nr. documento:</strong></label>
+						{{cobranca.numeroDocumento}}
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<label class="control-label"><strong>Data de emissão:</strong></label>
+						{{cobranca.dataEmissao | date : 'dd/MM/yyyy'}}
+					</div>
+					<div class="col-md-2 col-lg-2 pull-right">
+						<button type="button" class="btn btn-danger"
+							ng-click="cancelarCobranca(cobranca.id)"
+							ng-show="cobranca.situacaoCobranca != 'C'">
+							<i class="fa fa-ban"></i> Cancelar
+						</button>
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-9 col-lg-9">
+						<label class="control-label"><strong>Descrição:</strong></label>
+						{{cobranca.descricao}}
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label"><strong>Cliente: </strong></label>
+						{{cobranca.cliente.nomeFantasia}}
+					</div>
+				</div>
+				<div class="row row-form">					
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label"><strong>Fornecedor: </strong></label>
+						{{cobranca.fornecedor.nomeFantasia}}
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label"><strong>Preposto: </strong></label>
+						{{cobranca.vendedor.nomeFantasia}}
+					</div>					
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label"><strong>Categoria de cobrança: </strong></label>
+						{{cobranca.categoria.descricao}}
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label"><strong>Forma de pagamento: </strong></label>
+						{{cobranca.formaPagamento.descricao}}
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label"><strong>Conta bancária: </strong></label>
+						{{cobranca.contaBancaria.descricao}}
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-4 col-lg-4">
+						<label class="control-label"><strong>Valor bruto: </strong></label>
+						{{cobranca.valorBruto | currency: R$ : 2}}
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<label class="control-label"><strong>Valor desconto: </strong></label>
+						{{cobranca.valorDesconto | currency: R$ : 2}}
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<label class="control-label"><strong>Valor Líquido: </strong></label>
+						{{cobranca.valorLiquido | currency: R$ : 2}}
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-lg-12 table-responsive">
+						<table id="tabela-parcelas" data-toggle="table"
+							data-striped="true" data-sortable="true"
+							data-classes="table table-hover table-condensed"
+							data-refresh="true">
+							<thead>
+								<tr>
+									<th data-field="numeroParcela" data-sortable="true">Parcela</th>
+									<th data-field="valorLiquido" data-formatter="moneyFormatter" data-sortable="true">Valor</th>
+									<th data-field="dataPagamento" data-formatter="dateFormatter" data-sortable="true">Data pagamento</th>
+									<th data-field="dataVencimento" data-formatter="dateFormatter" data-sortable="true">Data vencimento</th>
+									<th data-field="situacaoParcela" data-formatter="situacaoParcelaFormatter" data-sortable="true">Situação</th>
+									<th data-formatter="editarParcelaFormatter" class="th-span"></th>
+									<th data-formatter="pagarEstornarParcelaFormatter" class="th-span"></th>
+
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+<ng-include src="'app/modules/financeiro/edicao-parcela/edicao-parcela.template.html'"></ng-include>
+
+
+<!-- Modais -->
+<div id="modal_lista_cheque" class="modal">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Inclusão de cheques do pagamento</h4>
+			</div>
+			<div class="modal-body" style="padding: 0">
+
+				<div class="row row-form">
+
+					<div class="col-md-6 col-lg-6"
+						ng-show="registro.tipoOperacao == 'S'">
+						<select class="form-control"
+							ng-options="item as (item.cliente.nomeFantasia + ' - N° ' + item.numeroCheque + ' - R$ ' + item.valor) for item in cheques track by item.id"
+							ng-model="chequeDisponivel">
+							<option value="">---- SELECIONE UM CHEQUE ----</option>
+						</select>
+					</div>
+					<button type="button" class="dema-btn-incluir btn btn-warning"
+						ng-click="incluirChequeDisponivel()"
+						ng-show="registro.tipoOperacao == 'S'">Incluir cheque
+						disponível</button>
+					<button type="button"
+						class="dema-btn-incluir btn btn-warning pull-rigth"
+						ng-click="incluirNovoCheque()"
+						ng-show="registro.tipoOperacao == 'E'">Cadastrar novo</button>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-12 col-lg-12">
+						<table id="tabela-cheques" data-toggle="table" data-striped="true"
+							data-sortable="true"
+							data-classes="table table-hover table-condensed"
+							data-refresh="true" data-export-data-type="">
+							<thead>
+								<tr>
+									<th data-field="cliente.nomeFantasia" data-sortable="true">Cliente</th>
+									<th data-field="numeroCheque" data-sortable="true">Número</th>
+									<th data-field="valor" data-sortable="true"
+										data-formatter="moneyFormatter">Valor</th>
+									<th data-field="dataCompensacao" data-sortable="true"
+										data-formatter="dateFormatter">Compensação</th>
+									<th data-formatter="excluirChequeFormatter" class="th-span"></th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="concluirPagamentoParcelaCheque()">Concluir</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+
+
+<!-- Modais -->
+<div id="modal_edicao_cheque" class="modal" style="z-index: 150000">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Cheque</h4>
+			</div>
+			<div class="modal-body" style="padding: 0">
+
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Cliente</label> <select
+							class="form-control"
+							ng-options="item as item.nomeFantasia for item in clientes track by item.id"
+							ng-model="novoCheque.cliente">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label>Número:</label> <input class="form-control"
+							ng-model="novoCheque.numeroCheque" type="text" />
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Posição</label> <select
+							class="form-control" ng-model="novoCheque.posicaoCheque">
+							<option value="">---- NÃO DEFINIDO ----</option>
+							<option value="E">Na empresa</option>
+							<option value="T">Em terceiros</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-3 col-lg-3">
+						<label>Valor:</label> <input class="form-control"
+							ng-model="novoCheque.valor" type="text" ui-number-mask="2" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label>Data entrada:</label> <input class="form-control"
+							ng-model="novoCheque.dataEntrada" type="date" />
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label>Data compensação:</label> <input class="form-control"
+							ng-model="novoCheque.dataCompensacao" type="date" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-4 col-lg-4">
+						<label>Banco (FREBRABAN)</label> <input class="form-control"
+							ng-model="novoCheque.banco" type="text" />
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<label>Agência</label> <input class="form-control"
+							ng-model="novoCheque.agencia" type="text" />
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<label>Dígito agência</label> <input class="form-control"
+							ng-model="novoCheque.digitoAgencia" type="text" maxlength="1" />
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label>Conta</label> <input class="form-control"
+							ng-model="novoCheque.conta" type="text" />
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label>Dígito conta</label> <input class="form-control"
+							ng-model="novoCheque.digitoConta" type="text" maxlength="1" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-12 col-lg-12">
+						<label>Descrição</label> <input class="form-control"
+							ng-model="novoCheque.descricao" type="text" />
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="salvarNovoCheque()">Salvar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

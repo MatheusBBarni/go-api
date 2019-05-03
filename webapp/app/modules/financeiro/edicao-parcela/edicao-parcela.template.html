@@ -1,0 +1,63 @@
+
+<!-- Modais -->
+<div id="modal_edicao_parcela" class="modal" ng-controller="EdicaoParcelaCtrl">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Edição de parcela</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" style="padding: 0" ng-form="formCadastro">
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Forma de pagamento</label> 
+	                	<select class="form-control"  ng-options="item as item.descricao for item in formasDePagamento track by item.id" ng-model="registro.formaPagamento" ng-disabled="registro.situacaoParcela == 'P' || registro.situacaoParcela == 'C'">
+		           			<option value="">---- NÃO DEFINIDO ----</option>
+		           		</select> 
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Conta bancária</label> 
+	                	<select class="form-control"  ng-options="item as item.descricao for item in contasBancarias track by item.id" ng-model="registro.contaBancaria" ng-disabled="registro.situacaoParcela == 'P' || registro.situacaoParcela == 'C'">
+		           			<option value="">---- NÃO DEFINIDO ----</option>
+		           		</select> 
+					</div>					
+				</div>
+				
+				<div class="row row-form">				
+				
+					<div class="form-group col-md-3 col-lg-3">
+						<label class="control-label">Data de vencimento</label>
+						<input class="form-control" ng-model="registro.dataVencimento" type="date" ng-disabled="registro.situacaoParcela == 'P' || registro.situacaoParcela == 'C'"/>
+					</div>					
+				
+					<div class="col-md-3 col-lg-3">
+						<label class="control-label">Valor Líquido</label> 
+						<div class="input-group">
+							<span class="input-group-addon">R$</span>
+							<input class="form-control" ng-model="registro.valorLiquido" ui-number-mask="2" ng-disabled="registro.situacaoParcela == 'P' || registro.situacaoParcela == 'C'">	
+	                	</div>						
+					</div>	
+					
+					<div class="form-group col-md-3 col-lg-3">
+						<label class="control-label">Data de pagamento</label>
+						<input class="form-control" ng-model="registro.dataPagamento" type="date" ng-disabled="registro.situacaoParcela == 'A' || registro.situacaoParcela == 'C'"/>
+					</div>						
+							
+				</div>				
+					
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="salvar()">Salvar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+	
+</div>
+	
+	

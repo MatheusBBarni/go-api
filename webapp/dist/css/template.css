@@ -1,0 +1,156 @@
+
+/*
+Modais
+*/
+.modal-title{
+  font-size: 24px;
+}
+.modal-header{
+  border-bottom-color: transparent;
+  border-bottom: 0;
+}
+.modal-body{
+  padding: 0;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+.modal-footer{
+  border-top-color: transparent;
+  border-top: 0;
+}
+
+input:focus{
+  background-color: #fffee9!important;    
+  border-color: #8a8403 !important;
+}
+
+.pull-right{
+  float:right;
+}
+.pull-left{
+  float:left;
+}
+.label-form{
+  margin-bottom: 0;
+}
+.btn {
+    border-radius: 0;
+    font-weight: 300;
+    letter-spacing: 1px;
+    color: white;
+    font-size: 14px;
+}
+
+.btn-salvar{
+  background-color: #07b907;
+  border-color: #07b907;
+}
+
+
+.btn-novo{
+  background-color: #07b907;
+  border-color: #07b907;
+  margin-bottom: 5px;
+  width: 100%;
+}
+.btn-fechar {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.row-form{
+  margin: 0 !important;
+  margin-top:10px !important;
+  margin-bottom:10px !important;
+}
+
+thead{
+  background-color: white;
+  font-size: 18px;
+}
+.th-span{
+    width:1%;
+
+    white-space:nowrap;
+}
+.th-acao{
+    width:1%;
+
+    white-space:nowrap;
+}
+.span-tabela{ 
+  text-align: center;
+    background-color: rgb(68,138,255);
+    color: white;
+    min-width: 16px;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    font-weight: 300;
+}
+
+.span-tabela-resumido{  
+  text-align:center;
+  color: rgb(68,138,255);
+  background-color:transparent;
+  width: 16px;
+  cursor: pointer;  
+  display:inline;
+}
+
+.btn-agrupado-direita{
+      height: 100%;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: gray;
+    border: 1px solid gray;    
+  background-color: #e6e6e6;
+}
+.btn-agrupado-esquerda{
+      height: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    color: gray;
+    border: 1px solid gray;
+  background-color: #e6e6e6;
+}
+.fixed-table-container tbody td {
+   border-left: 0px;
+}
+.fixed-table-container thead th {
+    border-left: 0
+}
+
+.nav-link {
+	color: black !important;
+}
+.active-tab{
+	
+	border: 1px solid #dee2e6;
+    border-bottom: none;
+}
+
+  	.linha-erro {
+  		color: red;
+  		text-decoration: underline;
+  	}
+  	
+.btn-filter {
+	margin-top: 25px;
+}
+
+div.form-body > div.row-form > div:nth-child(1) {
+	padding-left: 0px;
+}
+div.form-body > div.row-form > div:last-child {
+	padding-right: 0px;
+}
+
+.menu-titulo{
+	font-size: 20px;
+    font-weight: 500;
+    padding-top: 2px;
+}

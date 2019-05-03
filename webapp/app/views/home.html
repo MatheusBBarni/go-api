@@ -1,0 +1,30 @@
+
+<main class="corpo" ng-init="atualizarNomeTela('Home')">
+<div class="container">
+	<div id="container-principal" class="container-principal">
+		<div class="grupo-botoes">
+			<p style="font-size: 2em">Quantidade de usuários usando o app: {{quantidade}}</p>
+		</div>
+
+		<p style="font-size: 1.2em">Próximos embarques</p>
+		<table id="tabela-principal" data-toggle="table" data-striped="true"
+			data-sortable="true"
+			data-classes="table table-hover table-striped table-condensed"
+			data-refresh="true">
+			<thead>
+				<tr>
+					<th data-field="cliente.nomeFantasia" data-sortable="true">Nome</th>
+					<th data-field="viagemTransient.nome" data-sortable="true">Destino</th>
+					<th data-field="dataPartida" data-sortable="true" data-formatter="dateFormatter">Partida</th>
+					<th data-field="dataRetorno" data-sortable="true" data-formatter="dateFormatter">Retorno</th>
+				</tr>
+			</thead>
+		</table>
+
+	</div>
+</div>
+
+<footer>
+	@copyright - &nbsp; <img
+		src="http://demacode.com.br/wp-content/uploads/2018/10/loginnovo.png" />
+</footer> </main>

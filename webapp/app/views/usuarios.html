@@ -1,0 +1,91 @@
+<main class="corpo" ng-init="atualizarNomeTela('Usuários')">
+
+	<div class="container">
+		<div id="container-principal" class="container-principal">
+			<div class="grupo-botoes">
+				<div class="botao-incluir" ng-click="incluir()" onclick="showDetalhes('container-principal', 'container-detalhes')"><i class="fas fa-plus"></i> &nbsp; Incluir</div>
+			</div>
+	
+			<table id="tabela-usuarios" data-toggle="table" data-url="WS/Usuario"
+				data-striped="true" data-sortable="true"
+				data-classes="table table-hover table-striped table-condensed" data-refresh="true">
+				<thead>
+					<tr>
+						<th data-field="nome" data-sortable="true">Nome</th>
+						<th data-field="email" data-sortable="true">E-mail</th>
+						<th data-field="situacao" data-formatter="acertarSituacao" data-sortable="true">Situação</th>
+						<th data-formatter="editarFormatter" class="th-span"></th>
+						<th data-formatter="excluirFormatter" class="th-span"></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+
+
+	<div id="container-detalhes" class="container-detalhes">
+		<div class="container">
+			<div class="grupo-botoes">
+				<div class="botao-padrao botao-incluir" ng-click="salvar()" onclick="showDetalhes('container-detalhes', 'container-principal')"><i class="far fa-save"></i> &nbsp; Salvar</div>
+				<div class="botao-fechar" data-dismiss onclick="showDetalhes('container-detalhes', 'container-principal')"><i class="fas fa-times"></i></div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="corpo-detalhes">	
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-8">
+						<label for="itNome" class="label-form">Nome</label> 
+						<input id="itNome"class="form-control" ng-model="usuario.nome" type="text" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-10">
+						<label for="itEmail" class="label-form">E-mail</label> 
+						<input id="itEmail" class="form-control" ng-model="usuario.email" type="text" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-5">
+						<label for="itSenha" class="label-form">Senha</label> 
+						<input id="itSenha" class="form-control" ng-model="usuario.senha" type="password" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+						<label for="stSituacao" class="label-form">Situação</label> 
+						<select id="stSituacao" class="form-control" ng-model="usuario.situacao">
+							<option value="A">Ativo</option>
+							<option value="I">Inativo</option>
+						</select>
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+						<label for="stTipoUsuario" class="label-form">Atendente:</label> 
+						<select id="stTipoUsuario" class="form-control" ng-model="usuario.seAtendente">
+							<option value="N">Não</option>
+							<option value="S">Sim</option>
+						</select>
+					</div>
+				</div>
+
+
+				<div class="row row-form">
+					<div class="form-group col-lg-12">
+						<label>Imagem</label> 
+						<input type="file" ng-model="file"
+							onchange="angular.element(this).scope().converterArquivo(this)">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</main>
+
+<footer>
+	@copyright - &nbsp; <img src="http://demacode.com.br/wp-content/uploads/2018/10/loginnovo.png" />
+</footer>

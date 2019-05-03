@@ -1,0 +1,102 @@
+
+<div class="content" ng-init="atualizarNomeTela('Configuração')">
+	<div class="row row-form">
+		<div class="col-md-4">
+			<label for="itNomeFantasia" class="label-form">Nome fantasia</label> 
+			<input id="itNomeFantasia" class="form-control" ng-model="registro.nomeFantasia" />
+		</div>
+		<div class="col-md-4">
+			<label for="itRazaoSocial" class="label-form">Razão social</label> 
+			<input id="itRazaoSocial" class="form-control" ng-model="registro.razaoSocial" />
+		</div>
+		<div class="col-md-4">
+			<label for="itCpfCnpj" class="label-form">CNPJ</label> 
+			<input id="itCpfCnpj" class="form-control cnpj" ng-model="registro.cpfCnpj" />
+		</div>
+	</div>
+	<hr>
+	<div class="row row-form">
+		<div class="col-md-2">
+			<label for="itNomeContato" class="label-form">Pessoa de contato</label> 
+			<input id="itNomeContato" class="form-control" ng-model="registro.nomeContato" />
+		</div>
+		<div class="col-md-3">
+			<label for="itEmailContato" class="label-form">E-mail do contato</label> 
+			<input id="itEmailContato" class="form-control" ng-model="registro.emailContato" />
+		</div>
+		<div class="col-md-2">
+			<label for="itTelefoneComercial" class="label-form">Telefone comercial</label> 
+			<input id="itTelefoneComercial" class="form-control telefone" ng-model="registro.telefoneComercial" />
+		</div>
+		<div class="col-md-2">
+			<label for="itCelular" class="label-form">Celular</label> 
+			<input id="itCelular" class="form-control celular" ng-model="registro.celular" />
+		</div>
+	</div>
+	<hr>
+	<div class="row row-form">
+		<div class="col-md-2">
+			<label for="itCodigoBanco" class="label-form">Código do banco</label> 
+			<input id="itCodigoBanco" class="form-control" ng-model="registro.codigoBanco" ui-number-mask="0"/>
+		</div>
+		<div class="col-md-2">
+			<label for="itAgencia" class="label-form">Agencia</label> 
+			<input id="itAgencia" class="form-control" ng-model="registro.agencia" ui-number-mask="0"/>
+		</div>
+		<div class="col-md-1">
+			<label for="itDigitoAgencia" class="label-form">Dígito</label> 
+			<input id="ititDigitoAgencia" class="form-control" ng-model="registro.digitoAgencia" ui-number-mask="0"/>
+		</div>
+		<div class="col-md-2">
+			<label for="itConta" class="label-form">Conta</label> 
+			<input id="itConta" class="form-control" ng-model="registro.conta" ui-number-mask="0"/>
+		</div>
+		<div class="col-md-1">
+			<label for="itDigitoConta" class="label-form">Dígito</label> 
+			<input id="itDigitoConta" class="form-control" ng-model="registro.digitoConta" ui-number-mask="0"/>
+		</div>
+	</div>
+	<div class="row row-form">
+		<div class="col-md-3">
+			<label for="itNomePessoa" class="label-form">Nome responsável</label> 
+			<input id="itNomePessoa" class="form-control" ng-model="registro.nomePessoa" />
+		</div>
+		<div class="col-md-3">
+			<label for="itIdentificadorPessoa" class="label-form">Documento</label> 
+			<input id="itIdentificadorPessoa" class="form-control" ng-model="registro.identificadorPessoa" />
+		</div>
+
+	</div>
+	<hr>
+	<div class="row row-form">
+		<div class="col-md-2">
+			<label for="itCep" class="label-form">CEP</label> 
+			<input id="itCep" class="form-control cep" ng-model="registro.cep" />
+		</div>
+		<div class="col-md-3">
+			<label for="itEndereco" class="label-form">Endereço</label> 
+			<input id="itEndereco" class="form-control" ng-model="registro.endereco" />
+		</div>
+		<div class="col-md-3">
+			<label for="itBairro" class="label-form">Bairro</label> 
+			<input id="itBairro" class="form-control" ng-model="registro.bairro" />
+		</div>
+		<div class="col-md-2">
+			<label for="itNumero" class="label-form">Número</label> 
+			<input id="itNumero" class="form-control" type="text" ng-model="registro.numero" ui-number-mask="0"/>
+		</div>
+		<div class="col-md-2">
+			<label for="itComplemento" class="label-form">Complemento</label> 
+			<input id="itComplemento" class="form-control" ng-model="registro.complemento" />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<button class="btn btn-salvar" style="width: 100%" ng-click="salvar()">
+				<i class="fa fa-save"></i> Salvar
+			</button>
+		</div>
+	</div>
+	
+</div>

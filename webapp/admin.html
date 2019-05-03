@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html >
+<head>
+
+  	<meta charset="UTF-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge">  
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  
+  	<title>Minha Agência</title>
+  
+    <!-- ICONES -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <!-- FIM - ICONES -->
+    
+    <!-- FONTE -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif:400,700" rel="stylesheet">
+    <!-- / FONTE -->
+    
+    <!--  TEMAS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+    <!--<link rel="stylesheet" href="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/css/bootstrap-editable.css">-->
+	
+	<link rel="stylesheet" href="http://template.demacode.com.br/wp-content/themes/demacode/src/css/base.min.css">
+	<link rel="stylesheet" href="http://template.demacode.com.br/wp-content/themes/demacode/src/css/style.min.css">
+	<link rel="stylesheet" href="http://template.demacode.com.br/wp-content/themes/demacode/src/css/responsivo.min.css">
+	
+	<!-- 
+    <link rel="stylesheet" href="dist/css/demacode.css">
+    <link rel="stylesheet" href="dist/css/template.css">
+    <link rel="stylesheet" href="dist/css/custom-default.css">
+     -->
+     
+     <!--FIM - TEMAS -->
+    
+	<script type="text/javascript">
+	   paceOptions = {
+		  ajax: {
+		    trackMethods: ['GET', 'POST', 'DELETE']
+		  }
+		};
+    </script>
+    
+    <!-- PACE - LOADING -->
+    <script  src="dist/pace/pace.js"></script>
+    <link href="dist/pace/themes/black/pace-theme-loading-bar.css" rel="stylesheet" />
+    <!-- FIM - PACE - LOADING -->
+
+    <!--  MENSAGEM  -->
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
+    <!---FIM - MENSAGEM-->  
+  
+  	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+  	
+  	<link rel="stylesheet" href="dist/assets/angular-confirm/angular-confirm.min.css">
+ 
+</head>
+<style>
+.jc-bs3-row{
+	width:100% !important;
+}
+</style>
+<body ng-app="app">
+<div class="wrapper" ng-controller="MainCtrl">
+			
+	<div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="#!home" onclick="closeNav()">Home</a>
+      <a href="#!agencia" onclick="closeNav()">Agência</a>
+      <a href="#!clientes" onclick="closeNav()">Clientes</a>
+      <a href="#!ofertas" onclick="closeNav()">Ofertas</a>
+      <a href="#!usuarios" onclick="closeNav()">Usuários</a>
+      <a href="#!viagem" onclick="closeNav()">Viagens</a>
+      <a href="#!cotacao" onclick="closeNav()">Cotações</a>
+      <a href="#!dica" onclick="closeNav()">Dicas</a>
+      <a href="Logout" onclick="closeNav()">Sair</a>
+      <div class="side-footer">
+        <img src="http://demacode.com.br/wp-content/uploads/2018/10/loginnovo.png" />
+      </div>
+    </div>
+
+    <header>
+        
+        <div class="container">
+
+            <div class="menu">
+                <div class="logo">
+                    <a href="#!home"><img src="http://demacode.com.br/wp-content/uploads/2018/10/loginnovo.png" /></a>
+                </div>
+                <div class="menu-atalho">
+                    <a href="#!agencia" style="text-decoration: none"><div class="botao-atalho">Agência</div></a>
+                    <a href="#!clientes" style="text-decoration: none"><div class="botao-atalho">Clientes</div></a>
+                    <a href="#!viagem" style="text-decoration: none"><div class="botao-atalho">Viagens</div></a>
+                    <a href="#!cotacao" style="text-decoration: none"><div class="botao-atalho">Cotações</div></a>
+                </div>
+                <div class="menu-floater">
+                    <div onclick="openNav()" class="botao-menu"><i class="fas fa-bars"></i> &nbsp; Menu</div>
+                </div>
+            </div>
+
+        </div>
+
+    </header>
+  
+  <div id="content">
+  
+                 <div class="container-fluid">
+					<div class="container">
+	                     <div class="titulo-pagina">                         
+	                         <h2>{{$root.titulo}}</h3>
+	                     </div>
+                     </div>
+
+                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                         <ul class="nav navbar-nav navbar-right">                             
+                             <li><a href="#">Notificação</a></li>
+                             <li>{{usuarioLogado.nome}}</li>
+                         </ul>
+                     </div>
+                 </div>
+
+             <div ng-view>
+
+               
+       		</div>
+         </div>
+     </div>
+  
+  	
+	<!-- jQuery 2.2.3 -->
+	<script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+	<script>
+	  $.widget.bridge('uibutton', $.ui.button);
+	</script>
+
+  	<!-- Bootstrap -->
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	<!-- FastClick -->
+	<script src="dist/assets/fastclick/fastclick.js"></script>
+	<!-- AdminLTE App -->
+	<script src="dist/js/app.js"></script>
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
+
+	<script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.min.js"></script>
+	<script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-route.min.js"></script>
+	<script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.16/angular-filter.min.js"></script>	
+	<script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.6.5/angular-locale_pt-br.min.js"></script>
+	<script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-animate.min.js"></script>
+	<script  type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-touch.min.js"></script>
+
+	<script src="http://template.demacode.com.br/wp-content/themes/demacode/src/js/main.min.js"></script>
+	<script src="app/app.js"></script>
+	<script src="app/controllers/main-controller.js"></script>
+	<script src="app/controllers/home-controller.js"></script>
+	
+	<script src="app/controllers/UsuariosCtrl.js"></script>
+	<script src="app/controllers/ConfiguracaoCtrl.js"></script>
+	<script src="app/controllers/NotificacaoCtrl.js"></script>
+	<script src="app/controllers/ClientesCtrl.js"></script>
+	<script src="app/controllers/EnderecoCtrl.js"></script>
+	<script src="app/controllers/MaquinaCtrl.js"></script>
+	<script src="app/controllers/VendedorCtrl.js"></script>
+	<script src="app/controllers/FornecedoresCtrl.js"></script>
+	<script src="app/controllers/ProdutoCtrl.js"></script>
+	<script src="app/controllers/StatusCtrl.js"></script>
+	<script src="app/controllers/CategoriaCtrl.js"></script>
+	<script src="app/controllers/PedidoCtrl.js"></script>
+	<script src="app/controllers/MarcaCtrl.js"></script>
+	<script src="app/controllers/VarianteCtrl.js"></script>
+	<script src="app/controllers/NotaFiscalCtrl.js"></script>			
+	<script src="app/controllers/PedidoComissaoCtrl.js"></script>
+	<script src="app/controllers/AgenciaCtrl.js"></script>
+	<script src="app/controllers/PromocaoCtrl.js"></script>
+	<script src="app/controllers/DicaCtrl.js"></script>
+	
+	
+	<script src="app/controllers/ContaBancariaCtrl.js"></script>
+	<script src="app/controllers/FormaPagamentoCtrl.js"></script>
+	<script src="app/controllers/PlanoContaCtrl.js"></script>
+	<script src="app/controllers/CategoriaCobrancaCtrl.js"></script>
+	<script src="app/controllers/ContasReceberPagarCtrl.js"></script>
+	<script src="app/controllers/ChequeCtrl.js"></script>	
+
+	
+	<script src="app/controllers/ViagemCtrl.js"></script>
+	<script src="app/controllers/VoucherCtrl.js"></script>
+	<script src="app/controllers/CotacaoCtrl.js"></script>
+	
+	
+	
+	<script src="modules/layout/directives/dc-field-group.directive.js"></script>
+	<script src="modules/layout/directives/dc-row-form.directive.js"></script>
+	<script src="modules/layout/directives/dc-tab.directive.js"></script>
+	<script src="modules/layout/directives/dc-tabset.directive.js"></script>
+	<script src="modules/layout/directives/dc-modal-cadastro.directive.js"></script>
+	<script src="modules/layout/controllers/modal-cadastro.controller.js"></script>
+	
+	
+	<!-- MODULO CORTE -->
+	<script src="modules/ordem-corte/router.config.js"></script> 
+	<script src="modules/ordem-corte/scripts.js"></script>
+	<script src="modules/ordem-corte/directives/sidebar-menu-corte.directive.js"></script>
+	<script src="modules/ordem-corte/directives/consulta-ordem-corte.directive.js"></script>
+	<script src="modules/ordem-corte/directives/form-ordem-corte.directive.js"></script>
+	<script src="modules/ordem-corte/directives/form-concluir-ordem-corte.directive.js"></script>
+	<script src="modules/ordem-corte/controllers/consulta-ordem-corte.controller.js"></script>
+	<script src="modules/ordem-corte/controllers/form-ordem-corte.controller.js"></script>
+	<!-- / MODULO CORTE -->	
+	
+	<!-- MODULO EMPRESA -->
+	<script src="modules/empresa/services/filial.service.js"></script>
+	<!-- / MODULO EMPRESA -->
+	
+	<script src="app/modules/financeiro/edicao-parcela/edicao-parcela.controller.js"></script>
+
+  	<script src="https://rawgit.com/wenzhixin/bootstrap-table/master/src/bootstrap-table.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
+
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+  	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+  	<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/extensions/editable/bootstrap-table-editable.min.js"></script>
+  	<script src="//rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js"></script>
+
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-input-masks/4.1.0/angular-input-masks-standalone.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  	<script src="dist/js/demacode-masks.js"></script>
+  	<script src="dist/js/validations.js"></script>
+  	<script src="dist/js/error-handling.js"></script>
+
+  	<script type="text/javascript">
+	  	$(function() {
+	  		$.fn.modal.prototype.constructor.Constructor.Default.backdrop = 'static';
+	  		//$.fn.modal.prototype.constructor.Constructor.Default.keyboard =  false;
+	  	});
+	  	window.FontAwesomeConfig = {
+		    searchPseudoElements: true
+		  }
+	    $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+
+            	$(".collapse").collapse('hide');
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    
+  	</script>
+	
+	<script type="text/javascript" src="plugins/tinymce/tinymce.min.js"></script>  
+	<script type="text/javascript" src="plugins/angular-ui-tinymce/dist/tinymce.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+	
+	<script src="dist/assets/angular-confirm/angular-confirm.min.js"></script>
+	<script src="dist/assets/dateJs/date.js"></script>
+	
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+
+<div class="content" ng-init="atualizarNomeTela('Plano de Contas')">
+
+	
+	<div class="row">
+		<div class="col-lg-4">
+			<button type="button" class="btn btn-novo" ng-click="incluir()">Incluir novo</button>
+		</div>
+	</div>
+
+
+	<table id="tabela-principal" data-toggle="table" data-striped="true"
+		data-sortable="true" data-classes="table table-hover table-condensed"
+		data-refresh="true">
+		<thead>
+			<tr>
+				<th data-field="codigoInterno" data-sortable="true">Código</th>
+				<th data-field="descricao" data-sortable="true">Descrição</th>
+				<th data-field="situacao" data-formatter="acertarSituacao"
+					data-sortable="true">Situação</th>
+				<th data-formatter="editarFormatter" class="t-span"></th>
+				<th data-formatter="excluirFormatter" class="th-spa"></th>
+			</tr>
+		</thead>
+	</table>
+
+</div>
+
+
+<!-- Modais -->
+<div id="modal_edicao" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Conta contábil</h4>
+			</div>
+			<div class="modal-body" style="padding: 0">
+
+				<div class="row row-form">
+					<div class="col-md-12 col-lg-12">
+						<label>Conta Padrão</label> <select class="form-control"
+							ng-model="registro.contaPadrao">
+							<option ng-selected="registro.contaPadrao == ''" value="">---
+								Selecione ---</option>
+							<option ng-repeat="conta in contasPadrao"
+								value="{{ conta.value }}"
+								ng-selected="registro.contaPadrao == conta.value">{{
+								conta.descricao }}</option>
+						</select>
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-md-12 col-lg-12">
+						<label>Descrição</label> <input class="form-control"
+							ng-model="registro.descricao" type="text" />
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label>Código interno</label> <input class="form-control"
+							ng-model="registro.codigoInterno" type="text" />
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label>Código contabilidade</label> <input class="form-control"
+							ng-model="registro.codigoContabilidade" type="text" />
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="salvar()">Salvar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

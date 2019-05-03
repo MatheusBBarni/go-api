@@ -1,0 +1,34 @@
+       <div id="modal-form-concluir-ordem-corte" class="modal">
+         <div class="modal-dialog">
+           <div class="modal-content">
+             <div class="modal-header">
+             	<h4 class="modal-title">Concluir ordem de compra nº {{ctrl.registro.id}}</h4>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                 <span aria-hidden="true">&times;</span>
+               </button>
+             </div>
+             <div class="modal-body" style="padding: 0">  
+
+				<div class="row row-form">
+					<div class="col-lg-6">
+						<label>Data de entrega</label> 
+						<input class="form-control" ng-model="ctrl.registro.dataEntrega" type="date" />
+					</div>								
+				</div>
+				<div class="row row-form">
+					<div class="col-lg-6">
+						<label>Valor do serviço</label> 
+						<input class="form-control" ng-model="ctrl.registro.valorServico" ui-number-mask />
+					</div>
+				</div>         
+               
+             </div>
+             <div class="modal-footer">
+               <button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+               <button type="button" class="btn btn-salvar" ng-click="ctrl.concluirOrdemCorte()">Concluir ordem</button>
+             </div>
+           </div>
+           <!-- /.modal-content -->
+         </div>
+         <!-- /.modal-dialog -->
+       </div>	

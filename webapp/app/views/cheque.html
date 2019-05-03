@@ -1,0 +1,170 @@
+
+
+<div class="content" ng-init="atualizarNomeTela('Cheques')">
+
+	<div class="row">
+		<div class="col-lg-4">
+			<button type="button" class="btn btn-novo" ng-click="incluir()">Incluir novo</button>
+		</div>
+	</div>
+
+
+	<div class="row row-filter">
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label">Posição</label> <select
+				class="form-control" ng-model="filtro.posicaoCheque">
+				<option value="E">Na empresa</option>
+				<option value="T">Em terceiros</option>
+				<option value="">Todos</option>
+			</select>
+		</div>
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label">N° cheque</label> <input
+				class="form-control" ng-model="filtro.numeroCheque" />
+		</div>
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label">Compensação(de)</label> <input
+				class="form-control" ng-model="filtro.dataCompensacaoInicial"
+				type="date" />
+		</div>
+
+		<div class="form-group col-md-2 col-lg-2">
+			<label class="control-label">Compensação(até)</label> <input
+				class="form-control" ng-model="filtro.dataCompensacaoFinal"
+				type="date" />
+		</div>
+
+		<div class="form-group col-btn-filter col-md-2 col-lg-2">
+			<button type="button" class="btn-filter btn btn-success btn-filter"
+				ng-click="atualizarTabelaPrincipal()">Buscar</button>
+		</div>
+	</div>
+
+	<table id="tabela-principal" data-toggle="table" data-striped="true"
+		data-sortable="true" data-classes="table table-hover table-condensed"
+		data-refresh="true" data-export-data-type="">
+		<thead>
+			<tr>
+				<th data-field="filial.nomeFantasia" data-sortable="true">Filial</th>
+				<th data-field="cliente.nomeFantasia" data-sortable="true">Cliente</th>
+				<th data-field="numeroCheque" data-sortable="true">Número</th>
+				<th data-field="valor" data-sortable="true"
+					data-formatter="moneyFormatter">Valor</th>
+				<th data-field="dataCompensacao" data-sortable="true"
+					data-formatter="dateFormatter">Compensação</th>
+				<th data-formatter="editarFormatter" class="th-span"></th>
+				<th data-formatter="excluirFormatter" class="th-span"></th>
+			</tr>
+		</thead>
+	</table>
+
+</div>
+
+<!-- Modais -->
+<div id="modal_edicao" class="modal">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Cheque</h4>
+			</div>
+			<div class="modal-body" style="padding: 0">
+
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Cliente</label> <select
+							class="form-control"
+							ng-options="item as item.nomeFantasia for item in clientes track by item.id"
+							ng-model="registro.cliente">
+							<option value="">---- NÃO DEFINIDO ----</option>
+						</select>
+					</div>
+
+					<div class="form-group col-md-6 col-lg-6">
+						<label>Filial</label> <select class="form-control"
+							ng-options="item as item.nomeFantasia for item in filiais track by item.id"
+							ng-model="registro.filial">
+							<option value="">---- SELECIONE ----</option>
+						</select>
+					</div>
+
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label>Número:</label> <input class="form-control"
+							ng-model="registro.numeroCheque" type="text" />
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label class="control-label">Posição</label> <select
+							class="form-control" ng-model="registro.posicaoCheque">
+							<option value="">---- NÃO DEFINIDO ----</option>
+							<option value="E">Na empresa</option>
+							<option value="T">Em terceiros</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-3 col-lg-3">
+						<label>Valor:</label> <input class="form-control"
+							ng-model="registro.valor" type="text" ui-number-mask="2" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label>Data entrada:</label> <input class="form-control"
+							ng-model="registro.dataEntrada" type="date" />
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label>Data compensação:</label> <input class="form-control"
+							ng-model="registro.dataCompensacao" type="date" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-4 col-lg-4">
+						<label>Banco (FREBRABAN)</label> <input class="form-control"
+							ng-model="registro.banco" type="text" />
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<label>Agência</label> <input class="form-control"
+							ng-model="registro.agencia" type="text" />
+					</div>
+					<div class="col-md-4 col-lg-4">
+						<label>Dígito agência</label> <input class="form-control"
+							ng-model="registro.digitoAgencia" type="text" maxlength="1" />
+					</div>
+				</div>
+				<div class="row row-form">
+					<div class="col-md-6 col-lg-6">
+						<label>Conta</label> <input class="form-control"
+							ng-model="registro.conta" type="text" />
+					</div>
+					<div class="col-md-6 col-lg-6">
+						<label>Dígito conta</label> <input class="form-control"
+							ng-model="registro.digitoConta" type="text" maxlength="1" />
+					</div>
+				</div>
+
+				<div class="row row-form">
+					<div class="col-md-12 col-lg-12">
+						<label>Descrição</label> <input class="form-control"
+							ng-model="registro.descricao" type="text" />
+					</div>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-salvar" ng-click="salvar()">Salvar</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

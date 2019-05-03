@@ -1,0 +1,506 @@
+ 
+	<div class="content"  ng-init="atualizarNomeTela('Pedido')">
+		<div class="row">
+			<div class="col-lg-4">
+				<button type="button" class="btn btn-novo" onclick="$('#modal_edicao').modal('show');" ng-click="incluir()"><i class="fas fa-plus"></i> &nbsp; Incluir novo</button>
+			</div>			
+		</div>
+		
+	
+		<div class="row row-filter" ng-init="filtro.posicaoPedido = 'B'" style="margin-top: 5px;">
+			
+			
+			<div class="form-group col-md-2 col-lg-2" ng-show="false">
+       			<label class="control-label label-form">Filial</label>
+       			<select class="form-control"  ng-options="item as item.nomeFantasia for item in filiais track by item.id" ng-model="filtro.filial">
+    				<option value="">---- SELECIONE ----</option>
+    			</select>
+            </div>
+			
+			<div class="form-group col-md-2 col-lg-2" ng-show="false">
+				<label  class="control-label label-form">Posição</label>
+				<select class="form-control" ng-model="filtro.posicaoPedido">
+					<option value="B"> Em aberto </option>
+					<option value="G"> Todos em aberto </option>
+					<option value="A"> Aguardando pagamento </option> 
+					<option value="P"> Em produção </option>
+					<option value="S"> Em separação </option>
+					<option value="U"> Faturado </option>
+					<option value="T"> Em transporte </option> 
+					<option value="C"> Cancelado </option>
+					<option value="F"> Entregue" </option> 
+				</select>
+			</div>
+			
+			<div class="form-group col-md-2 col-lg-2">
+				<label class="control-label label-form">N° pedido</label>
+				<input class="form-control" type="number" ng-model="filtro.numeroPedido" />
+			</div>
+			
+			<div class="form-group col-md-2 col-lg-2">
+				<label class="control-label label-form">Entrega(de)</label>
+				<input class="form-control" ng-model="filtro.dataEntregaInicial" type="date" />
+			</div>
+			
+			<div class="form-group col-md-2 col-lg-2">
+				<label class="control-label label-form">Entrega(até)</label>
+				<input class="form-control" ng-model="filtro.dataEntregaFinal" type="date"/>
+			</div>			
+			
+			<div class="form-group col-btn-filter col-md-2 col-lg-2">
+				<button type="button" class="btn-filter btn btn-success btn-filter" ng-click="atualizarTabelaPrincipal()">Buscar</button>
+			</div>
+		</div>		
+	
+	
+		<table id="tabela-principal" data-toggle="table"
+	       data-striped="true"
+	       data-sortable="true"
+	       data-classes="table table-striped table-hover"
+	       data-refresh="true"
+			>
+		    <thead>
+		    <tr>
+		        <th data-field="numeroPedido" data-sortable="true">Número</th>
+		        <th data-field="cliente.nomeFantasia" data-sortable="true">Cliente</th>
+		        <th data-field="dataEmissao" data-formatter="dateFormatter" data-sortable="true">Emissão</th>
+		        <th data-field="dataEntrega" data-formatter="dateFormatter" data-sortable="true">Entrega</th>
+		        <th data-field="valorTotal" data-formatter="moneyFormatter" data-sortable="true">Valor</th>
+		        <th data-formatter="editarFormatter" class="th-acao"></th>
+		        <th data-formatter="imprimirPedidoPortoFormatter" class="th-acao"></th>
+		        <th data-formatter="faturarFormatter" class="th-acao" ng-show="posicaoPedido == 'B' || posicaoPedido == 'T'"></th>
+		        <th data-formatter="cancelarFormatter" class="th-acao" ng-show="posicaoPedido == 'B' || posicaoPedido == 'T'" ></th>
+		        <th data-formatter="excluirFormatter" class="th-acao bg-red"></th>
+		    </tr>
+		    </thead>
+		</table>
+		
+	</div>
+	
+	<!-- Modais -->
+	
+        <div id="modal_edicao" class="modal">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Pedido</h4>
+              </div>
+              <div class="modal-body" style="padding: 0">
+              
+              		<ul class="nav nav-tabs" role="tablist" style="padding-left: 25px; padding-top: 15px">
+				    	<li role="presentation" id="panel-dados" class="nav-link"><a href="" ng-click="ativarDados()" aria-controls="dados" role="tab" data-toggle="tab">Dados</a></li>
+				    	<li role="presentation" id="panel-itens" class="nav-link"><a href="" ng-click="ativarItens()"  aria-controls="itens" role="tab" data-toggle="tab">Itens</a></li>
+					</ul> 
+              
+              	<div class="tab-content">	
+              	
+			  		<div role="tabpanel" class="tab-pane" id="tab-dados">
+			  		
+			  			<div class="row row-form">
+		              		<div class="col-lg-4">
+								<label class="control-label label-form">Número pedido</label>
+			                	<input class="form-control" ng-model="registro.numeroPedido" ui-number-mask="0"/>
+		              		</div>
+		              	</div>
+		              	
+		              	<div class="row row-form">
+		              		<div class="col-lg-3">
+			              		<label class="control-label label-form">Data de emissão</label>
+			                	<input class="form-control" ng-model="registro.dataEmissao" type="date" />
+		              		</div>
+		              		<div class="col-lg-3">
+			              		<label class="control-label label-form">Data de entrega</label>
+			                	<input class="form-control" ng-model="registro.dataEntrega" type="date"/>
+		              		</div>	
+		              		<div class="col-md-6 col-lg-6">
+		                		<label  class="control-label label-form">Fornecedor</label>
+		                		<select class="form-control"  ng-options="item as item.nomeFantasia for item in fornecedores track by item.id" ng-model="registro.fornecedor">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>
+		                </div>
+
+		                <div class="row row-form">
+		                	<div class="col-md-5 col-lg-5" ng-show="vendedores.length > 1">
+		                		<label  class="control-label label-form">Vendedor</label>
+		                		<select class="form-control"  ng-options="item as item.nomeFantasia for item in vendedores track by item.id" ng-model="registro.vendedor">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>
+		                	<div class="col-md-3 col-lg-3">
+		                		<label class="control-label label-form">% Comissão Vendedor</label>
+		                		<input class="form-control"  ng-model="registro.percentualComissaoVendedor" ui-number-mask="2" ng-change="atualizarComissoesVendedores()">
+		                	</div>			                	
+							<div class="col-md-5 col-lg-5">
+		                		<label class="control-label label-form">Preposto</label>
+		                		<select class="form-control"  ng-options="item as item.nomeFantasia for item in prepostos track by item.id" ng-model="registro.preposto">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>
+		                	<div class="col-md-3 col-lg-3">
+		                		<label class="control-label label-form">% Comissão Preposto</label>
+		                		<input class="form-control"  ng-model="registro.percentualComissaoPreposto" ui-number-mask="2" ng-change="atualizarComissoesVendedores()"/>
+		                	</div>
+		                </div>			                
+
+		                <div class="row row-form">
+		                	<div class="col-lg-6 col-md-6">
+		                		<label  class="control-label label-form">Forma/Condições de pagamento</label>
+		                		<select class="form-control"  ng-options="item.id as montaDescricaoPagamento(item) for item in formasPagamento" ng-model="registro.formaPagamento">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>
+		                	<div class="col-lg-3 col-md-3">
+		                		<label class="control-label label-form">Tipo de frete</label>
+		                		<select class="form-control" ng-model="registro.tipoFrete">
+				           			<option value="">---- SELECIONE ----</option>
+				           			<option value="C">CIF</option>
+				           			<option value="F">FOB</option>
+				           		</select>
+		                	</div>		                	
+		                </div>
+		                
+		                <div class="row row-form">
+		                	<div class="col-lg-6 col-md-6">
+		                		<label  class="control-label label-form">Cliente</label>
+		                		<select class="form-control"  ng-options="item as item.nomeFantasia for item in clientes track by item.id" ng-model="registro.cliente">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>
+		                	<div class="col-lg-6 col-md-6">
+		                		<label  class="control-label label-form">Local de entrega</label>
+		                		<select class="form-control"  ng-options="item as item.descricao for item in enderecos track by item.id" ng-model="registro.enderecoEntrega">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>		                	
+		                </div>
+		                	
+		                 <div class="row row-form" ng-show="registro.enderecoEntrega != null">		                	
+		                	<div class="col-lg-2">
+		                		<label style="font-weight:bold" class="form-label control-label">CEP</label>
+		                		<br>
+								{{registro.enderecoEntrega.cep}}
+		                	</div>		
+		                	<div class="col-lg-4">
+		                		<label  style="font-weight:bold" class="form-label control-label">Rua</label>
+		                		<br>
+								{{registro.enderecoEntrega.endereco}}
+		                	</div>		
+		                	<div class="col-lg-4">
+		                		<label style="font-weight:bold"  class="form-label control-label">Bairro</label>
+		                		<br>
+								{{registro.enderecoEntrega.bairro}}
+		                	</div>		
+		                	<div class="col-lg-2">
+		                		<label style="font-weight:bold"  class="form-label control-label">Número</label>
+		                		<br>
+								{{registro.enderecoEntrega.numero}}
+		                	</div>			                	
+		                </div>
+		                <div class="row row-form" ng-show="registro.enderecoEntrega != null">		                	
+		                	<div class="col-lg-4">
+		                		<label  style="font-weight:bold" class="form-label control-label">Complemento</label>
+		                		<br>
+								{{registro.enderecoEntrega.complemento}}
+		                	</div>		
+		                	<div class="col-lg-3">
+		                		<label style="font-weight:bold"  class="form-label control-label">Cidade</label>
+		                		<br>
+								{{registro.enderecoEntrega.cidade.descricao}}
+		                	</div>		
+		                	<div class="col-lg-2">
+		                		<label style="font-weight:bold"  class="form-label control-label">Estado</label>
+		                		<br>
+								{{registro.enderecoEntrega.estado.uf}}
+		                	</div>
+		                	<div class="col-lg-3">
+		                		<label  style="font-weight:bold" class="form-label control-label">Telefone</label>
+		                		<br>
+								{{registro.enderecoEntrega.telefone}}
+		                	</div>		
+		                </div>
+		                
+							<div class="row row-form">
+								<div class="col-sm-12 col-md-12">
+									<label class="label-form">Observação</label>
+									<textarea class="form-control" rows="3" ng-model="registro.observacao"></textarea>
+								</div>
+							</div>			                
+		                
+		                <div class="row row-form">
+		                	<legend style="margin-left: 15px">Quantidade e Valores</legend>
+		                	<div class="col-lg-3">
+		                		<label class="control-label">Qtd total</label>
+		                		<input class="form-control" ng-model="registro.quantidadeItens" readonly ui-number-mask="0"/>
+		                	</div>
+		                	<div class="col-lg-3">
+		                		<label class="control-label">Valor total</label>
+		                		<input class="form-control" ng-model="registro.valorTotal" readonly ui-number-mask="2"/>
+		                	</div>		                		                	
+		                </div>	       		                          
+		      		</div>
+		      		
+		      		<div role="tabpanel" class="tab-pane" id="tab-itens">
+		      		
+		      			<div class="row row-form" ng-show="posicaoPedido == 'B'">
+		      					                	
+		                	<div class="col-md-8 col-lg-8">
+		                		<label class="control-label label-form">Item</label>
+		                		<select class="form-control" ng-options="item as item.descricao for item in produtos track by item.id" 
+		                		ng-model="item.produto" ng-change="changeProduto()">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>
+		                	<div class="col-lg-4">
+		                		<label class="control-label label-form">Cor</label>
+		                		<select class="form-control"  ng-options="item.caracteristica as item.caracteristica.descricao for item in variantes" 
+		                		ng-model="item.caracteristicaVariante">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>		                	
+
+		                	<div class="col-lg-4">
+		                		<label class="control-label label-form">Marca</label>
+		                		<select class="form-control"  ng-options="item as item.descricao for item in marcas" 
+		                		ng-model="item.caracteristicaVariante2">
+				           			<option value="">---- SELECIONE ----</option>
+				           		</select>
+		                	</div>	
+		                	
+		                	<div class="col-lg-3">
+		                		<label class="control-label label-form">Valor unit.</label>
+		                		<input class="form-control"  ng-model="item.precoTabela" ui-number-mask/>
+		                	</div>
+		                	<div class="col-lg-3">
+		                		<label class="control-label label-form">ICMS(%)</label>
+		                		<input class="form-control"  ng-model="item.percentualIcms" ui-number-mask/>
+		                	</div>
+		                	<div class="col-lg-2">
+		                		<label class="control-label label-form">Quantidade</label>
+		                		<input class="form-control" ng-model="item.quantidade" type="text" ui-number-mask="0"/>
+		                	</div>
+		                </div>
+		                
+		                <div class="row row-form">
+		                	<div class="col-lg-12">
+		                		<button class="btn btn-success btn-filter" style='width:100%' ng-click="adicionarItem()">Adicionar</button>
+		                	</div>	
+		                </div>
+		                
+		                <div class="row row-form">
+		                	<div class="col-lg-12">
+			                	<legend>Itens</legend>
+			                	<table id="tabela-itens" data-toggle="table"
+							       data-striped="true"
+							       data-sortable="true"
+							       data-classes="table table-hover table-condensed"
+							       data-refresh="true">
+								    <thead> 
+								    <tr>
+								        <th data-field="produto.descricao" data-sortable="true">Produto</th>
+								        <th data-field="caracteristicaVariante.descricao" data-sortable="true">Cor</th>
+								        <th data-field="caracteristicaVariante2.descricao" data-sortable="true">Marca</th>
+								        <th data-field="quantidade" data-sortable="true">Quantidade</th>
+								        <th data-field="precoTabela" data-formatter="moneyFormatter" data-sortable="true">Preço/Kg</th>
+								        <th data-field="precoTotal" data-formatter="moneyFormatter" data-sortable="true">Valor total</th>
+								        <th data-field="percentualIcms" data-formatter="moneyFormatter" data-sortable="true">ICMS(%)</th>	
+								        <th data-formatter="excluirLocalFormatter" class="th-acao"></th>
+								    </tr>
+								    </thead>
+								</table>
+							</div>
+		                </div>
+		      		</div> <!-- /tab-itens -->
+		      		
+		      	</div>
+		      
+		      	
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-salvar" ng-click="salvar()" ng-show="posicaoPedido == 'B'">Salvar</button>
+              </div>
+            </div>
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
+        
+        
+        
+        
+		<div id="modal_rastreio" class="modal">
+			<div class="modal-dialog" style='width: 50%'>
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Pedido</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" style="padding: 0px">
+						<div class="row row-form">
+							<div class="col-lg-12">
+								<label class="control-label label-form">Código de rastreio</label> 
+								<input ng-model="transporte.numeroRastreio" class="form-control" />
+							</div>
+						</div>
+						<div class="row row-form">
+							<div class="col-lg-12">
+								<label class="control-label label-form">Nome transportadora</label> 
+								<input ng-model="transporte.nomeTransportador" class="form-control" />
+							</div>
+						</div>
+						<div class="row row-form">
+							<div class="col-lg-6">
+								<label class="control-label label-form">Data entrega na transportadora</label> 
+								<input ng-model="transporte.dataEntregaTransportadora" class="form-control" type="date"/>
+							</div>
+							<div class="col-lg-6">
+								<label class="control-label label-form">Data de entrega de entrega</label> 
+								<input ng-model="transporte.dataEstimadaEntrega" class="form-control" type="date"/>
+							</div>							
+						</div>						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Fechar</button>
+						<button type="button" class="btn btn-salvar" ng-click="transportarPedido()">Salvar</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>	
+		<!-- /.modal -->        
+	
+	
+		<div id="modal_faturamento" class="modal">
+			<div class="modal-dialog modal-lg" style='width: 50%'>
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Dados de faturamento</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" style="padding: 0px">
+					
+						<div class="row row-form">
+							<div class="col-lg-4">
+								<label class="control-label label-form">Número da nota</label> 
+								<input ng-model="faturamento.numero" class="form-control" />
+							</div>
+							<div class="col-lg-4">
+								<label class="control-label label-form">Série</label> 
+								<input ng-model="faturamento.serie" class="form-control" />
+							</div>							
+						
+						</div>
+						
+						<div class="row row-form">
+							<div class="col-lg-12">
+								<label class="control-label label-form">Chave de acesso</label> 
+								<input ng-model="faturamento.chaveAcesso" class="form-control" maxlength="44"/>
+							</div>
+						</div>
+						
+	                	<div class="col-lg-12 col-md-12">
+	                		<label  class="control-label label-form">Cliente(Compra)</label>
+	                		<select class="form-control"  ng-options="item as item.nomeFantasia for item in clientes track by item.id" ng-model="faturamento.cliente">
+			           		</select>
+	                	</div>
+	                	<div class="col-lg-12 col-md-12">
+	                		<label  class="control-label label-form">Cliente(Faturamento)</label>
+	                		<select class="form-control"  ng-options="item as item.nomeFantasia for item in clientes track by item.id" ng-model="faturamento.clienteFaturamento">
+			           		</select>
+	                	</div>
+						<div class="col-lg-12 col-md-12">
+	                		<label  class="control-label label-form">Endereço de entrega</label>
+	                		<select class="form-control"  ng-options="item as item.descricao for item in enderecos track by item.id" ng-model="faturamento.enderecoEntrega">
+			           		</select>
+	                	</div>
+						
+						<div class="row row-form">
+						<div class="col-lg-12 col-md-12">
+			                	<legend>Itens</legend>
+
+
+								<div class="bootstrap-table">
+									<div class="fixed-table-toolbar"></div>
+									<div class="fixed-table-container" style="padding-bottom: 0px;">
+										<div class="fixed-table-body">
+											<table id="tabela-principal" data-toggle="table"
+												data-striped="true" data-sortable="true"
+												class="table table-striped table-hover">
+												<thead>
+													<tr>
+														<th style="" data-field="seMarcado">
+															<div class="th-inner">X</div>
+															<div class="fht-cell"></div>
+														</th>											
+														<th style="" data-field="id">
+															<div class="th-inner">Produto</div>
+															<div class="fht-cell"></div>
+														</th>
+														<th style="" data-field="cliente.nomeFantasia">
+															<div class="th-inner">Cor</div>
+															<div class="fht-cell"></div>
+														</th>
+														<th style="" data-field="dataEmissao">
+															<div class="th-inner">Marca</div>
+															<div class="fht-cell"></div>
+														</th>
+														<th style="" data-field="dataEntrega">
+															<div class="th-inner">Quantidade</div>
+															<div class="fht-cell"></div>
+														</th>
+														<th style="" data-field="valorTotal">
+															<div class="th-inner">Preço/Kg</div>
+															<div class="fht-cell"></div>
+														</th>
+														<th style="" data-field="valorTotal">
+															<div class="th-inner">Valor total</div>
+															<div class="fht-cell"></div>
+														</th>	
+														<th style="" data-field="percentualIcms">
+															<div class="th-inner">ICMS(%)</div>
+															<div class="fht-cell"></div>
+														</th>	
+													</tr>
+												</thead>
+												<tbody>
+												
+												    <tr ng-repeat="item in faturamento.itens">
+												    	<td style=""><input class="form-control" ng-model="item.seMarcado" type="checkbox"/></td>
+												        <td style="">{{item.produto.descricao}}</td>
+												        <td style="">{{item.caracteristicaVariante.descricao}}</td>
+												        <td style="">{{item.caracteristicaVariante2.descricao}}</td>
+												        <td style=""><input class="form-control" ng-model="item.quantidadeFaturamento" type="text" ui-number-mask="0"/></td>
+												        <td style="">{{item.precoTabela}}</td>
+												        <td style="">{{item.precoTabela * item.quantidadeFaturamento }}</td>
+												        <td style="">{{item.percentualIcms | currency:'':'2'}}</td>	
+												    </tr>										
+		
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+
+
+
+							</div>
+		                </div>
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-fechar pull-left" data-dismiss="modal">Cancelar</button>
+						<button type="button" class="btn btn-salvar" ng-click="concluirFaturamento()">Salvar</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>	
+		<!-- /.modal -->	
+	
