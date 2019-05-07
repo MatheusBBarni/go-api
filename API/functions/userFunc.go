@@ -14,18 +14,6 @@ import (
 var db *gorm.DB
 var err error
 
-func InitialMigration() {
-	db, err = gorm.Open("mysql", "root:root@/goorm?charset=utf8&parseTime=True&loc=Local")
-	if err != nil {
-		fmt.Println(err.Error())
-		panic("Failed to connect")
-	}
-	defer db.Close()
-
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.Produto{})
-}
-
 func AllUserRes(w http.ResponseWriter, r *http.Request) {
 	db, err = gorm.Open("mysql", "root:root@/goorm?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
