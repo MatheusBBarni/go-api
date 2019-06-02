@@ -2,17 +2,26 @@
  * Controller das regras de negócio do usuário 
  */
 
-app.controller('UsuariosCtrl', function($scope)
+app.controller('ProdutoCtrl', function($scope, $http)
 {
-	$scope.WebService = "WS/Usuario/";
-	$scope.usuario = { sistema: []};
+	$scope.WebService = "/Produtos";
 
-	$('#tabela-usuarios').bootstrapTable({
-		onLoadSuccess: function(){
-		      $( "html" ).removeClass( "loading" );
-		    }
-	});	
-		
+
+	$scope.atualizarTabelaProduto = () => {
+		$http.get($scope.WebService).then((response) => {
+			if(response.data) {
+				$('#tabela-produtos').bootstrapTable( {
+					data: response.data
+				})
+			} else {
+				$('#tabela-produtos').bootstrapTable( {
+					data: []
+				})
+			}
+		})
+	}
+	$scope.atualizarTabelaProduto();
+	
 	$scope.salvar = function (){
 		$scope.usuario.tipoUsuario = 'S';
 
